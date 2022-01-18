@@ -1,0 +1,24 @@
+
+name: mhus-simple
+version: 1.0.0
+
+fieldTypes:
+- text
+- integer
+- long
+- double
+- boolean
+- date
+- uuid
+
+aliases:
+ bool: boolean
+ int: integer
+ int32: integer
+
+dateFormats:
+- date: yyyy-mm-ddTDD-MM-SS.Z
+
+numberFormats:
+- integer: \#
+- double: \#.0\#

@@ -1,0 +1,28 @@
+name: yaidl to java client
+
+definitions:
+- mhus-simple 1.0.0-2.0.0
+
+#processor: freemarker
+processor: dummy
+flavor: java # controls camel case of function names and more
+
+properties:
+  package: com.example.idl
+  name: Example
+
+instructions:
+- target: general
+  path: ${javaPackageAsPath}/Util.java
+  template: idl.fm
+  
+- target: service 
+  path: ${javaPackageAsPath}/Service${javaName}.java
+  template: service.fm
+
+- target: struct
+  path: ${javaPackageAsPath}/I${javaName}.java
+  template: struct_ifc.fm
+- target: struct
+  path: ${javaPackageAsPath}/O${javaName}.java
+  template: struct_obj.fm
