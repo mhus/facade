@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import de.mhus.lib.core.MProperties;
 
@@ -59,7 +61,18 @@ public class Model {
 			System.out.println(">>> " + service.getKey());
 			service.getValue().dump();
 		}
-
+		System.out.println("========= Modules =================");
+		for (String module : getModules()) {
+			System.out.println(">>> " + module);
+			for (Struct struct : getModuleStructs(module)) {
+				System.out.println("--- Struct: " + struct.getName());
+//				struct.dump();
+			}
+			for (Service service : getModuleServices(module)) {
+				System.out.println("--- Service: " + service.getName());
+//				service.dump();
+			}
+		}
 	}
 
 	public Map<String, Struct> getStructs() {
@@ -81,4 +94,40 @@ public class Model {
 	public MProperties getProperties() {
 		return properties;
 	}
+
+	public Set<String> getModules() {
+		TreeSet<String> set = new TreeSet<>();
+		for (Entry<String, Struct> struct : structs.entrySet()) {
+			String module = struct.getValue().getProperties().getString("module", null);
+			if (module != null)
+				set.add(module);
+		}
+		for (Entry<String, Service> service : services.entrySet()) {
+			String module = service.getValue().getProperties().getString("module", null);
+			if (module != null)
+				set.add(module);
+		}		
+		return set;
+	}
+	
+	public List<Struct> getModuleStructs(String name) {
+		ArrayList<Struct> list = new ArrayList<>();
+		for (Entry<String, Struct> struct : structs.entrySet()) {
+			String module = struct.getValue().getProperties().getString("module", null);
+			if (module != null && module.equals(name))
+				list.add(struct.getValue());
+		}
+		return list;
+	}
+
+	public List<Service> getModuleServices(String name) {
+		ArrayList<Service> list = new ArrayList<>();
+		for (Entry<String, Service> service : services.entrySet()) {
+			String module = service.getValue().getProperties().getString("module", null);
+			if (module != null && module.equals(name))
+				list.add(service.getValue());
+		}
+		return list;
+	}
+
 }

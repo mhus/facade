@@ -2,12 +2,14 @@ package org.summerclouds.idlgen.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
+import de.mhus.lib.core.MLog;
 import de.mhus.lib.core.MProperties;
 import de.mhus.lib.core.parser.StringCompiler;
 import de.mhus.lib.errors.MException;
 
-public class Generator {
+public class Generator extends MLog {
 
 	private Model model;
 	private String name;
@@ -26,6 +28,9 @@ public class Generator {
 			case GENERAL:
 				generateGlobal(inst);
 				break;
+			case MODULE:
+				generateModule(inst);
+				break;
 			case SERVICE:
 				generateService(inst);
 				break;
@@ -39,6 +44,24 @@ public class Generator {
 		}
 	}
 
+	private void generateModule(Instruction inst) throws MException {
+		for (String module : model.getModules()) {
+			List<Struct> structs = model.getModuleStructs(module);
+			List<Service> services = model.getModuleServices(module);
+			
+			MProperties prop = new MProperties(model.getProperties());
+			prop.setString("_name", module);
+			prop.put("_inst", inst.getDef());
+			prop.put("_structs", structs);
+			prop.put("_services", services);
+			
+			String path = StringCompiler.compile(inst.getPath()).execute(prop);
+			File d = new File(targetDir, path);
+			log().i("Create module",module,d);
+			processor.process(d,inst.getTemplate(), prop);
+		}
+	}
+	
 	private void generateStruct(Instruction inst) throws MException {
 		for (Struct struct : model.getStructs().values()) {
 			String name = struct.getName();
@@ -50,9 +73,9 @@ public class Generator {
 			prop.put("_fields", struct.getFields());
 			prop.put("_object", struct);
 			
-//			flavor.prepare(prop);
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
 			File d = new File(targetDir, path);
+			log().i("Create struct",d);
 			processor.process(d,inst.getTemplate(), prop);
 		}
 	}
@@ -69,9 +92,9 @@ public class Generator {
 			prop.put("_result", service.getResult());
 			prop.put("_object", service);
 
-//			flavor.prepare(prop);
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
 			File d = new File(targetDir, path);
+			log().i("Create service",d);
 			processor.process(d,inst.getTemplate(), prop);
 		}
 	}
@@ -80,9 +103,9 @@ public class Generator {
 		MProperties prop = new MProperties(model.getProperties());
 		prop.put("_inst", inst.getDef());
 		
-//		flavor.prepare(prop);
 		String path = StringCompiler.compile(inst.getPath()).execute(prop);
 		File d = new File(targetDir, path);
+		log().i("Create global",d);
 		processor.process(d,inst.getTemplate(), prop);
 	}
 

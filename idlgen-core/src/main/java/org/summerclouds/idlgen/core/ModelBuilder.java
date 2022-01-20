@@ -166,30 +166,50 @@ public class ModelBuilder extends MLog {
 		
 		Field result = null;
 		if (e.getElement("result") != null) {
-			String resultType = null;
-			Field.SEQUENCE sequence = Field.SEQUENCE.SINGLE;
-			if (e.isString("result"))
-				resultType = e.getString("result", "");
-			else {
+			if (e.isString("result")) {
+				String resultType = e.getString("result", "");
+				result = new Field(e, "result", resultType, Field.SEQUENCE.SINGLE);
+			} else {
 				YMap resultE = e.getMap("result");
-				resultType = resultE.getString("type");
-				sequence = getSequence(resultE.getString("sequence", ""));
+				String resultType = resultE.getString("type");
+				SEQUENCE sequence = getSequence(resultE.getString("sequence", ""));
+				if (resultType.equals("struct")) {
+					resultType = "service_" + name + "_result";
+					loadStruct(resultE, resultType);
+					result = new Field(e, "result", resultType, sequence);
+				} else {
+					result = new Field(e, "result", resultType, sequence);
+				}
 			}
-			result = new Field(e, null, resultType, sequence);
 		}
 		ArrayList<Field> parameters = new ArrayList<>();
 		if (e.getElement("parameters") != null) {
 			YList paramsE = e.getList("parameters");
+			int cnt = 0;
 			for (YMap paramE : paramsE.toMapList()) {
 				String paramName = paramE.getString("name");
 				String paramType = paramE.getString("type");
 				SEQUENCE sequence = getSequence(paramE.getString("sequence", ""));
-				Field field = new Field(paramE, paramName, paramType, sequence);
+				if (paramType.equals("struct")) {
+					paramType = "service_" + name + "_parameter" + cnt + "_" + paramName;
+					loadStruct(paramE, paramType);
+				}
+				Field field = new Field(paramE, "parameter" + cnt + "_" + paramName, paramType, sequence);
 				parameters.add(field);
+				cnt++;
 			}
 		}
 		
 		Service service = new Service(e,name,parameters,result, local);
+		
+		YMap propertiesE = e.getMap("properties");
+		if (propertiesE != null) {
+			for (String key : propertiesE.getKeys()) {
+				Object value = propertiesE.getObject(key);
+				service.getProperties().put(key, value);
+			}
+		}
+
 		gen.addService(name, service);
 	}
 
@@ -233,6 +253,15 @@ public class ModelBuilder extends MLog {
 		}
 		
 		Struct struct = new Struct(e, name, fields, local);
+		
+		YMap propertiesE = e.getMap("properties");
+		if (propertiesE != null) {
+			for (String key : propertiesE.getKeys()) {
+				Object value = propertiesE.getObject(key);
+				struct.getProperties().put(key, value);
+			}
+		}
+		
 		gen.addStruct(name, struct);
 	}
 
@@ -338,7 +367,7 @@ public class ModelBuilder extends MLog {
 			field.doAlias(org);
 		// type ?
 		if (gen.getDefinition().getFieldTypes().containsKey(field.getType())) {
-			
+			field.setFieldDefinition(gen.getDefinition().getFieldTypes().get(field.getType()));
 		} else
 		if (gen.getStructs().containsKey(field.getType())) {
 			field.setStruct(gen.getStructs().get(field.getType()));

@@ -4,7 +4,7 @@ import de.mhus.lib.core.yaml.YMap;
 
 public class Instruction {
 
-	public enum TARGET {GENERAL,STRUCT,SERVICE}
+	public enum TARGET {GENERAL,MODULE,STRUCT,SERVICE}
 	private YMap def;
 	private TARGET target;
 	private String path;

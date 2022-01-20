@@ -11,8 +11,8 @@ properties:
   name: Example
 
 instructions:
-- target: general
-  path: ${javaPackageAsPath}/Util.java
+- target: module
+  path: ${javaPackageAsPath}/${classModule}Util.java
   template: idl.ftl
   
 - target: service 

@@ -4,12 +4,18 @@ version: 1.0.0
 
 type:text:
   description: Text
-
+  java: String
+  
 type:date:
   format: yyyy-mm-ddTDD-MM-SS.Z
-
+  java: java.util.Date
+  
 type:uuid:
   description: Text
+  java: java.util.UUID
+  
+type:integer:
+  java: int
 
 aliases:
  bool: boolean

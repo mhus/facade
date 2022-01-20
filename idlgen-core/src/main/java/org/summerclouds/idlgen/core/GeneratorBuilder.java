@@ -118,6 +118,8 @@ public class GeneratorBuilder {
 			return TARGET.STRUCT;
 		if ("service".equals(val))
 			return TARGET.SERVICE;
+		if ("module".equals(val))
+			return TARGET.MODULE;
 		throw new UsageException("unknown target",val);
 	}
 

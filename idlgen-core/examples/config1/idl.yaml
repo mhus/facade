@@ -6,6 +6,7 @@ imports:
 
 global:
   name: Example
+  module: aaa
 
 local:
   module: aaa
@@ -48,4 +49,32 @@ service:accounts:
     sequence: array
     description: The list of requested accounts
 
-    
+service:createAccount:
+  parameters:
+    - name: first_name
+      type: text
+    - name: last_name
+      type: text
+    - name: bank
+      type: struct
+      fields:
+        accountId: text
+        bankName: text
+        bankId: text
+    - name: address
+      type: struct
+      fields:
+        street: text
+        streetNumber: text
+        zip: text
+        country: text
+        town: text
+  result:
+    type: struct
+    fields:
+      userId: text
+      crmId: text
+
+service:accountsCount:
+  result: int
+      

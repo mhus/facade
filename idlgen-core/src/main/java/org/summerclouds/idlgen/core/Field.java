@@ -11,6 +11,7 @@ public class Field {
 	private YMap def;
 	private String alias;
 	private Struct struct;
+	private FieldDefinition fieldDefinition;
 
 	public Field(YMap def, String name, String type, SEQUENCE sequence) {
 		this.def = def;
@@ -57,4 +58,20 @@ public class Field {
 		return def;
 	}
 
+	public FieldDefinition getFieldDefinition() {
+		return fieldDefinition;
+	}
+
+	public void setFieldDefinition(FieldDefinition field) {
+		this.fieldDefinition = field;
+	}
+
+	public boolean isField() {
+		return fieldDefinition != null;
+	}
+	
+	public boolean isStruct() {
+		return struct != null;
+	}
+	
 }

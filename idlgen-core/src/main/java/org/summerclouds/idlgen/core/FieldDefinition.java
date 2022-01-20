@@ -6,10 +6,12 @@ public class FieldDefinition {
 
 	private String name;
 	private String description;
+	private YMap def;
 
-	public FieldDefinition(YMap defE, String name) {
+	public FieldDefinition(YMap def, String name) {
 		this.name = name;
-		this.description = defE.getString("format", null);
+		this.description = def.getString("format", null);
+		this.def = def;
 	}
 
 	public void dump() {
@@ -18,6 +20,10 @@ public class FieldDefinition {
 
 	public String getName() {
 		return name;
+	}
+	
+	public YMap getDefinition() {
+		return def;
 	}
 
 }

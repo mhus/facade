@@ -33,7 +33,7 @@ public class GeneratorTest extends TestCase {
 	public void test2() throws MException, IOException {
 		Model model = new Model();
 		ModelBuilder builder = new ModelBuilder(model);
-		builder.load(new File("examples/config2/idl.yaml"));
+		builder.load(new File("examples/config1/idl.yaml"));
 		builder.build();
 		
 //		model.dump();
