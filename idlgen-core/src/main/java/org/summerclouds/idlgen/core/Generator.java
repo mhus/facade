@@ -43,13 +43,14 @@ public class Generator {
 		for (Struct struct : model.getStructs().values()) {
 			String name = struct.getName();
 			MProperties prop = new MProperties(model.getProperties());
+			prop.putAll(struct.getProperties());
 			prop.setString("_name", name);
 			prop.put("_inst", inst.getDef());
 			prop.put("_def", struct.getDefinition());
 			prop.put("_fields", struct.getFields());
 			prop.put("_object", struct);
 			
-			flavor.prepare(prop);
+//			flavor.prepare(prop);
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
 			File d = new File(targetDir, path);
 			processor.process(d,inst.getTemplate(), prop);
@@ -60,6 +61,7 @@ public class Generator {
 		for (Service service : model.getServices().values()) {
 			String name = service.getName();
 			MProperties prop = new MProperties(model.getProperties());
+			prop.putAll(service.getProperties());
 			prop.setString("_name", name);
 			prop.put("_inst", inst.getDef());
 			prop.put("_def", service.getDefinition());
@@ -67,7 +69,7 @@ public class Generator {
 			prop.put("_result", service.getResult());
 			prop.put("_object", service);
 
-			flavor.prepare(prop);
+//			flavor.prepare(prop);
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
 			File d = new File(targetDir, path);
 			processor.process(d,inst.getTemplate(), prop);
@@ -78,7 +80,7 @@ public class Generator {
 		MProperties prop = new MProperties(model.getProperties());
 		prop.put("_inst", inst.getDef());
 		
-		flavor.prepare(prop);
+//		flavor.prepare(prop);
 		String path = StringCompiler.compile(inst.getPath()).execute(prop);
 		File d = new File(targetDir, path);
 		processor.process(d,inst.getTemplate(), prop);
@@ -114,6 +116,10 @@ public class Generator {
 	
 	public String getName() {
 		return name;
+	}
+
+	public Flavor getFlavor() {
+		return flavor;
 	}
 	
 	

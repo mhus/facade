@@ -21,9 +21,9 @@ public class GeneratorTest extends TestCase {
 		builder.load(new File("examples/config1/idl.yaml"));
 		builder.build();
 		
-		model.dump();
 		
-		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates1")).generator();
+		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates1")).build();
+		model.dump();
 		gen.setTargetDir(new File("target"));
 		gen.generate();
 		
@@ -38,7 +38,7 @@ public class GeneratorTest extends TestCase {
 		
 //		model.dump();
 		
-		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates2")).generator();
+		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates2")).build();
 		gen.setTargetDir(new File("target"));
 		gen.generate();
 		

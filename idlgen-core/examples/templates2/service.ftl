@@ -1,3 +1,3 @@
-public class Service${javaName} {
+public class Service${className} {
 
 }

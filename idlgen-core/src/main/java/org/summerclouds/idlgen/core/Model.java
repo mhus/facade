@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.summerclouds.idlgen.core.Field.SEQUENCE;
-
 import de.mhus.lib.core.MProperties;
 
 public class Model {
@@ -24,12 +22,10 @@ public class Model {
 
 	public void addDefinition(Definition def) {
 		definitions.add(def);
-		for (String value : def.getFieldTypes())
+		for (FieldDefinition value : def.getFieldTypes().values())
 			definition.addFieldType(value);
 		for (Map.Entry<String, String> value : def.getAliases().entrySet())
 			definition.addAlias(value.getKey(), value.getValue());
-		for (Map.Entry<String, String> value : def.getFormats().entrySet())
-			definition.addFormat(value.getKey(), value.getValue());
 	}
 
 	public void setProperty(String key, Object value) {

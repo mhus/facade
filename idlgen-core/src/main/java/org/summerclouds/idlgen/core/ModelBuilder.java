@@ -10,7 +10,7 @@ import org.summerclouds.idlgen.core.Field.SEQUENCE;
 
 import de.mhus.lib.core.MFile;
 import de.mhus.lib.core.MLog;
-import de.mhus.lib.core.MString;
+import de.mhus.lib.core.MProperties;
 import de.mhus.lib.core.util.MUri;
 import de.mhus.lib.core.util.Version;
 import de.mhus.lib.core.yaml.YList;
@@ -26,6 +26,7 @@ public class ModelBuilder extends MLog {
     protected Schemes schemes = new Schemes();
     protected ConfigTypes types = new ConfigTypes();
 	private String dir;
+	private MProperties local = new MProperties();
 	
 	public ModelBuilder() {
 		this(new Model());
@@ -76,12 +77,15 @@ public class ModelBuilder extends MLog {
         def.setName(name);
         def.setVersion(version);
         
-        YList fieldTypesE = docE.getList("fieldTypes");
-        if (fieldTypesE != null) {
-        	for (String fieldType : fieldTypesE.toStringList()) 
-        		def.addFieldType(fieldType);
+        for (String key : docE.getKeys()) {
+        	if (key.startsWith("type:")) {
+        		String typeName = key.substring(5);
+        		YMap defE = docE.getMap(key);
+        		FieldDefinition d = new FieldDefinition(defE, typeName);
+        		def.addFieldType(d);
+        	}
         }
-        
+                
         YMap aliasesE = docE.getMap("aliases");
         if (aliasesE != null) {
         	for (String from : aliasesE.getKeys()) {
@@ -89,15 +93,7 @@ public class ModelBuilder extends MLog {
         		def.addAlias(from, to);
         	}
         }
-        
-        YMap formatsE = docE.getMap("formats");
-        if (formatsE != null) {
-        	for (String field : formatsE.getKeys()) {
-        		String format = formatsE.getString(field);
-        		def.addFormat(field, format);
-        	}
-        }
-        
+                
         gen.addDefinition(def);
 	}
 	
@@ -137,36 +133,36 @@ public class ModelBuilder extends MLog {
         YList importE = docE.getList("imports");
         loadImports(importE);
 
+        local = new MProperties();
+        
         // load definitions
         YList definitionE = docE.getList("definitions");
         loadDefinitions(definitionE);
         
         // load parameters
-        YMap propertiesE = docE.getMap("properties");
+        YMap propertiesE = docE.getMap("global");
         loadProperties(propertiesE);
         
-        YList elementsE = docE.getList("elements");
-        loadElements(elementsE);
+        // load parameters
+        YMap localE = docE.getMap("local");
+        loadLocalProperties(localE);
+        
+        for (String key : docE.getKeys()) {
+        	if (key.startsWith("struct:")) {
+        		String name = key.substring(7);
+        		YMap elementE = docE.getMap(key);
+        		loadStruct(elementE, name);
+        	} else
+        	if (key.startsWith("service:")) {
+        		String name = key.substring(8);
+        		YMap elementE = docE.getMap(key);
+        		loadService(elementE, name);
+        	}
+        }
         
 	}
 
-    private void loadElements(YList elementsE) {
-		if (elementsE == null) return;
-		 for (YMap elementE : elementsE.toMapList()) {
-			 String service = elementE.getString("service", "");
-			 String struct = elementE.getString("struct", "");
-			 if (MString.isSetTrim(struct)) {
-				 loadStruct(elementE);
-			 } else
-			 if (MString.isSetTrim(service)) {
-				 loadService(elementE);
-			 } else
-				 log().w("Unknown element type", elementE);
-		 }
-	}
-
-	private void loadService(YMap e) {
-		String name = e.getString("service").trim();
+	private void loadService(YMap e, String name) {
 		
 		Field result = null;
 		if (e.getElement("result") != null) {
@@ -193,7 +189,7 @@ public class ModelBuilder extends MLog {
 			}
 		}
 		
-		Service service = new Service(e,name,parameters,result);
+		Service service = new Service(e,name,parameters,result, local);
 		gen.addService(name, service);
 	}
 
@@ -208,9 +204,7 @@ public class ModelBuilder extends MLog {
 		return Field.SEQUENCE.SINGLE;
 	}
 
-	private void loadStruct(YMap e) {
-		String name = e.getString("struct").trim();
-		
+	private void loadStruct(YMap e, String name) {
 		ArrayList<Field> fields = new ArrayList<>();
 		
 		YMap fieldsE = e.getMap("fields");
@@ -221,16 +215,24 @@ public class ModelBuilder extends MLog {
 					String type = fieldsE.getString(key);
 					field = new Field(null, key, type, SEQUENCE.SINGLE);
 				} else {
-					YMap x = fieldsE.getMap(key);
-					String type = x.getString("type");
-					SEQUENCE sequence = getSequence(x.getString("sequence", ""));
-					field = new Field(x, key, type, sequence);
+					if (key.startsWith("struct:")) {
+						YMap x = fieldsE.getMap(key);
+						SEQUENCE sequence = getSequence(x.getString("sequence", ""));
+						String innerName = name + "_" + key.substring(7);
+						loadStruct(x, innerName);
+						field = new Field(x, key.substring(7), innerName, sequence);
+					} else {
+						YMap x = fieldsE.getMap(key);
+						String type = x.getString("type");
+						SEQUENCE sequence = getSequence(x.getString("sequence", ""));
+						field = new Field(x, key, type, sequence);
+					}
 				}
 				fields.add(field);
 			}
 		}
 		
-		Struct struct = new Struct(e, name, fields);
+		Struct struct = new Struct(e, name, fields, local);
 		gen.addStruct(name, struct);
 	}
 
@@ -242,24 +244,42 @@ public class ModelBuilder extends MLog {
     	}
 	}
 
+	private void loadLocalProperties(YMap propertiesE) {
+    	if (propertiesE == null || !propertiesE.isMap()) return;
+    	for (String key : propertiesE.getKeys()) {
+    		Object value = propertiesE.getObject(key);
+    		local.put(key, value);
+    	}
+	}
+	
 	protected void loadDefinitions(YList importE) throws MException {
         if (importE == null) return;
         for (String uriStr : importE.toStringList()) {
-            MUri uri = MUri.toUri("file:" + absolutPath(uriStr));
+            MUri uri = MUri.toUri(absolutPath(uriStr));
             loadDefinition(uri);
         }
     }
 
     private String absolutPath(String path) {
-    	if (!path.startsWith("/")) // not in windows ...
-    		path = new File(dir, path).getAbsolutePath();
-		return path;
+    	int p = path.indexOf(':');
+    	// already have a schema - max size 10
+    	if (p > 1 && p < 10)
+    		return path;
+    	// windows C:/
+    	if (p == 1 && path.length() > 2 && (path.charAt(3) == '/' || path.charAt(3) == '\\'))
+    		return "file:" + path;
+    	// linux /
+    	if (path.startsWith("/"))
+    		return "file:" + path;
+    	// relative path
+    	return "file:" + new File(dir, path).getAbsolutePath();
 	}
 
 	protected void loadImports(YList importE) throws MException {
+		local = new MProperties();
         if (importE == null) return;
         for (String uriStr : importE.toStringList()) {
-            MUri uri = MUri.toUri("file:" + absolutPath(uriStr));
+            MUri uri = MUri.toUri(absolutPath(uriStr));
             load(uri);
         }
     }
@@ -317,15 +337,13 @@ public class ModelBuilder extends MLog {
 		if (org != null)
 			field.doAlias(org);
 		// type ?
-		if (gen.getDefinition().getFieldTypes().contains(field.getType())) {
+		if (gen.getDefinition().getFieldTypes().containsKey(field.getType())) {
 			
 		} else
 		if (gen.getStructs().containsKey(field.getType())) {
 			field.setStruct(gen.getStructs().get(field.getType()));
 		} else
 			throw new NotFoundException("field type not found", field.getType());
-		
-		
 	}
 	
 	

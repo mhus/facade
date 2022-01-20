@@ -1,3 +1,3 @@
-public interface I${javaName} {
+public interface I${className} {
 
 }

@@ -2,6 +2,7 @@ package org.summerclouds.idlgen.core;
 
 import java.util.List;
 
+import de.mhus.lib.core.MProperties;
 import de.mhus.lib.core.yaml.YMap;
 
 public class Struct {
@@ -9,11 +10,17 @@ public class Struct {
 	private YMap def;
 	private List<Field> fields;
 	private String name;
+	private MProperties properties;
 
-	public Struct(YMap def, String name, List<Field> fields) {
+	public Struct(YMap def, String name, List<Field> fields, MProperties local) {
 		this.def = def;
 		this.fields = fields;
 		this.name = name;
+		this.properties = new MProperties(local);
+	}
+
+	public MProperties getProperties() {
+		return properties;
 	}
 
 	public List<Field> getFields() {
@@ -24,6 +31,8 @@ public class Struct {
 		System.out.println("  Fields:");
 		for (Field field : fields)
 			field.dump();
+		System.out.println("  Properties:");
+		properties.forEach((k,v) -> System.out.println("    " + k + "=" + v));
 	}
 
 	public YMap getDefinition() {

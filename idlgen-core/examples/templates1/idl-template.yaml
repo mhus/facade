@@ -17,12 +17,12 @@ instructions:
   template: idl.fm
   
 - target: service 
-  path: ${javaPackageAsPath}/Service${javaName}.java
+  path: ${javaPackageAsPath}/Service${className}.java
   template: service.fm
 
 - target: struct
-  path: ${javaPackageAsPath}/I${javaName}.java
+  path: ${javaPackageAsPath}/I${className}.java
   template: struct_ifc.fm
 - target: struct
-  path: ${javaPackageAsPath}/O${javaName}.java
+  path: ${javaPackageAsPath}/O${className}.java
   template: struct_obj.fm

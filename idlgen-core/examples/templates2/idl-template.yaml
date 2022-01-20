@@ -16,12 +16,12 @@ instructions:
   template: idl.ftl
   
 - target: service 
-  path: ${javaPackageAsPath}/Service${javaName}.java
+  path: ${javaPackageAsPath}/Service${className}.java
   template: service.ftl
 
 - target: struct
-  path: ${javaPackageAsPath}/I${javaName}.java
+  path: ${javaPackageAsPath}/I${className}.java
   template: struct_ifc.ftl
 - target: struct
-  path: ${javaPackageAsPath}/O${javaName}.java
+  path: ${javaPackageAsPath}/O${className}.java
   template: struct_obj.ftl

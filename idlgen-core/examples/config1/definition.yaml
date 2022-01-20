@@ -2,23 +2,16 @@
 name: mhus-simple
 version: 1.0.0
 
-fieldTypes:
-- text
-- integer
-- long
-- double
-- boolean
-- date
-- uuid
+type:text:
+  description: Text
+
+type:date:
+  format: yyyy-mm-ddTDD-MM-SS.Z
+
+type:uuid:
+  description: Text
 
 aliases:
  bool: boolean
  int: integer
  int32: integer
-
-dateFormats:
-- date: yyyy-mm-ddTDD-MM-SS.Z
-
-numberFormats:
-- integer: \#
-- double: \#.0\#

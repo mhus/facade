@@ -94,6 +94,22 @@ public class GeneratorBuilder {
 		return this;
 	}
 
+	public Generator build() {
+		
+		// flavor
+		for (Struct struct : gen.getModel().getStructs().values()) {
+			struct.getProperties().put("_name", struct.getName());
+			gen.getFlavor().prepare( struct.getProperties() );
+		}
+		for (Service service : gen.getModel().getServices().values()) {
+			service.getProperties().put("_name", service.getName());
+			gen.getFlavor().prepare( service.getProperties() );
+		}
+		gen.getFlavor().prepare( gen.getModel().getProperties() );
+		
+		return gen;
+	}
+	
 	private TARGET toTarget(String val) {
 		val = val.trim().toLowerCase();
 		if ("general".equals(val))
@@ -105,9 +121,9 @@ public class GeneratorBuilder {
 		throw new UsageException("unknown target",val);
 	}
 
-	public Generator generator() {
-		return gen;
-	}
+//	public Generator generator() {
+//		return gen;
+//	}
 
 	
 	

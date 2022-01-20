@@ -1,3 +1,3 @@
-public class O${javaName} implements I${javaName} {
+public class O${className} implements I${className} {
 
 }
