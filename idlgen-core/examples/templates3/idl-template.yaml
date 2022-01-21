@@ -13,12 +13,16 @@ properties:
 instructions:
 
 - target: module
+  path: ${javaPackageAsPath}/${classModule}Controller.java
+  template: controller.ftl
+  
+- target: module
   path: ${javaPackageAsPath}/${classModule}Service.java
   template: service.ftl
   
 - target: module
-  path: ${javaPackageAsPath}/${classModule}Target.java
-  template: target.ftl
+  path: ${javaPackageAsPath}/${classModule}Client.java
+  template: client.ftl
   
 - target: service 
   path: ${javaPackageAsPath}/Service${className}.java
@@ -26,7 +30,4 @@ instructions:
 
 - target: struct
   path: ${javaPackageAsPath}/${className}.java
-  template: struct_ifc.ftl
-- target: struct
-  path: ${javaPackageAsPath}/${className}Impl.java
-  template: struct_impl.ftl
+  template: struct.ftl

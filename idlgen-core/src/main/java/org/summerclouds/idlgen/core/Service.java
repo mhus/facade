@@ -19,6 +19,8 @@ public class Service {
 		this.parameters = parameters;
 		this.result = result;
 		this.properties = new MProperties(local);
+		if (name != null)
+			properties.setString("_name", name);
 	}
 
 	public MProperties getProperties() {

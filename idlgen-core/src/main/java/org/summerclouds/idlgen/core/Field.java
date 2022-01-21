@@ -1,5 +1,6 @@
 package org.summerclouds.idlgen.core;
 
+import de.mhus.lib.core.MProperties;
 import de.mhus.lib.core.yaml.YMap;
 
 public class Field {
@@ -12,12 +13,15 @@ public class Field {
 	private String alias;
 	private Struct struct;
 	private FieldDefinition fieldDefinition;
+	private MProperties properties = new MProperties();
 
 	public Field(YMap def, String name, String type, SEQUENCE sequence) {
 		this.def = def;
 		this.name = name;
 		this.type = type;
 		this.sequence = sequence;
+		if (name != null)
+			properties.setString("_name", name);
 	}
 
 	public String getName() {
@@ -72,6 +76,10 @@ public class Field {
 	
 	public boolean isStruct() {
 		return struct != null;
+	}
+
+	public MProperties getProperties() {
+		return properties;
 	}
 	
 }

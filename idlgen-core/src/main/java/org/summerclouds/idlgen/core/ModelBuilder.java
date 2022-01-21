@@ -151,7 +151,7 @@ public class ModelBuilder extends MLog {
         	if (key.startsWith("struct:")) {
         		String name = key.substring(7);
         		YMap elementE = docE.getMap(key);
-        		loadStruct(elementE, name);
+        		loadStruct(elementE, name, false);
         	} else
         	if (key.startsWith("service:")) {
         		String name = key.substring(8);
@@ -175,26 +175,29 @@ public class ModelBuilder extends MLog {
 				SEQUENCE sequence = getSequence(resultE.getString("sequence", ""));
 				if (resultType.equals("struct")) {
 					resultType = "service_" + name + "_result";
-					loadStruct(resultE, resultType);
+					loadStruct(resultE, resultType, true);
 					result = new Field(e, "result", resultType, sequence);
 				} else {
 					result = new Field(e, "result", resultType, sequence);
+					loadFieldProperties(result,e);
 				}
 			}
 		}
 		ArrayList<Field> parameters = new ArrayList<>();
 		if (e.getElement("parameters") != null) {
 			YList paramsE = e.getList("parameters");
+			@SuppressWarnings("unused")
 			int cnt = 0;
 			for (YMap paramE : paramsE.toMapList()) {
 				String paramName = paramE.getString("name");
 				String paramType = paramE.getString("type");
 				SEQUENCE sequence = getSequence(paramE.getString("sequence", ""));
 				if (paramType.equals("struct")) {
-					paramType = "service_" + name + "_parameter" + cnt + "_" + paramName;
-					loadStruct(paramE, paramType);
+					paramType = "service_" + name + /* "_parameter" + cnt + */ "_" + paramName;
+					loadStruct(paramE, paramType, true);
 				}
-				Field field = new Field(paramE, "parameter" + cnt + "_" + paramName, paramType, sequence);
+				Field field = new Field(paramE, /* "parameter" + cnt + "_" + */ paramName, paramType, sequence);
+				loadFieldProperties(field, paramE);
 				parameters.add(field);
 				cnt++;
 			}
@@ -213,6 +216,17 @@ public class ModelBuilder extends MLog {
 		gen.addService(name, service);
 	}
 
+	private void loadFieldProperties(Field field, YMap e) {
+		YMap propertiesE = e.getMap("properties");
+		if (propertiesE == null) return;
+		if (propertiesE != null) {
+			for (String key : propertiesE.getKeys()) {
+				Object value = propertiesE.getObject(key);
+				field.getProperties().put(key, value);
+			}
+		}
+	}
+
 	private Field.SEQUENCE getSequence(String value) {
 		value = value.trim().toLowerCase();
 		if ("single".equals(value))
@@ -224,7 +238,7 @@ public class ModelBuilder extends MLog {
 		return Field.SEQUENCE.SINGLE;
 	}
 
-	private void loadStruct(YMap e, String name) {
+	private void loadStruct(YMap e, String name, boolean nested) {
 		ArrayList<Field> fields = new ArrayList<>();
 		
 		YMap fieldsE = e.getMap("fields");
@@ -239,20 +253,21 @@ public class ModelBuilder extends MLog {
 						YMap x = fieldsE.getMap(key);
 						SEQUENCE sequence = getSequence(x.getString("sequence", ""));
 						String innerName = name + "_" + key.substring(7);
-						loadStruct(x, innerName);
+						loadStruct(x, innerName, true);
 						field = new Field(x, key.substring(7), innerName, sequence);
 					} else {
 						YMap x = fieldsE.getMap(key);
 						String type = x.getString("type");
 						SEQUENCE sequence = getSequence(x.getString("sequence", ""));
 						field = new Field(x, key, type, sequence);
+						loadFieldProperties(field,x);
 					}
 				}
 				fields.add(field);
 			}
 		}
 		
-		Struct struct = new Struct(e, name, fields, local);
+		Struct struct = new Struct(e, name, fields, local, nested);
 		
 		YMap propertiesE = e.getMap("properties");
 		if (propertiesE != null) {

@@ -6,6 +6,7 @@ imports:
 
 global:
   name: Example
+  module: aaa
 
 local:
   module: aaa
@@ -38,8 +39,12 @@ service:account:
   - name: id 
     type: uuid
     description: The unique id of the user to request
-    
+    properties:
+      origin: var:id
+      
   result: account
+  properties:
+    mapping: /account/{id}
 
 service:accounts:
   parameters:
@@ -47,5 +52,41 @@ service:accounts:
     type: account
     sequence: array
     description: The list of requested accounts
+  properties:
+    mapping: /accounts
 
-    
+service:createAccount:
+  parameters:
+    - name: first_name
+      type: text
+    - name: last_name
+      type: text
+    - name: bank
+      type: struct
+      fields:
+        accountId: text
+        bankName: text
+        bankId: text
+    - name: address
+      type: struct
+      fields:
+        street: text
+        streetNumber: text
+        zip: text
+        country: text
+        town: text
+  result:
+    type: struct
+    fields:
+      userId: text
+      crmId: text
+  properties:
+    mapping: /
+    method: post
+
+service:accountsCount:
+  result: int
+  properties:
+    mapping: /count
+    method: get
+      

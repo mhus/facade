@@ -11,12 +11,16 @@ public class Struct {
 	private List<Field> fields;
 	private String name;
 	private MProperties properties;
+	private boolean nested;
 
-	public Struct(YMap def, String name, List<Field> fields, MProperties local) {
+	public Struct(YMap def, String name, List<Field> fields, MProperties local, boolean nested) {
 		this.def = def;
 		this.fields = fields;
 		this.name = name;
+		this.nested = nested;
 		this.properties = new MProperties(local);
+		if (name != null)
+			properties.setString("_name", name);
 	}
 
 	public MProperties getProperties() {
@@ -41,6 +45,10 @@ public class Struct {
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isNested() {
+		return nested;
 	}
 
 }

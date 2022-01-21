@@ -24,12 +24,12 @@ public class GeneratorTest extends TestCase {
 		
 		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates1")).build();
 		model.dump();
-		gen.setTargetDir(new File("target"));
+		gen.setTargetDir(new File("target/generated-test-sources"));
 		gen.generate();
 		
 	}
 
-	@Test
+	//@Test
 	public void test2() throws MException, IOException {
 		Model model = new Model();
 		ModelBuilder builder = new ModelBuilder(model);
@@ -39,7 +39,22 @@ public class GeneratorTest extends TestCase {
 //		model.dump();
 		
 		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates2")).build();
-		gen.setTargetDir(new File("target"));
+		gen.setTargetDir(new File("target/generated-test-sources2"));
+		gen.generate();
+		
+	}
+
+	@Test
+	public void test3() throws MException, IOException {
+		Model model = new Model();
+		ModelBuilder builder = new ModelBuilder(model);
+		builder.load(new File("examples/config3/idl.yaml"));
+		builder.build();
+		
+//		model.dump();
+		
+		Generator gen = new GeneratorBuilder(model).load(new File("examples/templates3")).build();
+		gen.setTargetDir(new File("target/generated-test-sources3"));
 		gen.generate();
 		
 	}

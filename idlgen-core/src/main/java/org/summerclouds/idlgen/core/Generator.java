@@ -49,11 +49,20 @@ public class Generator extends MLog {
 			List<Struct> structs = model.getModuleStructs(module);
 			List<Service> services = model.getModuleServices(module);
 			
+			// minimum one service or struct must be set
+			MProperties properties = null;
+			if (structs.size() > 0)
+				properties = structs.get(0).getProperties();
+			else
+				properties = services.get(0).getProperties();
+			
 			MProperties prop = new MProperties(model.getProperties());
 			prop.setString("_name", module);
+			prop.put("_model", model);
 			prop.put("_inst", inst.getDef());
 			prop.put("_structs", structs);
 			prop.put("_services", services);
+			prop.put("_properties", properties);
 			
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
 			File d = new File(targetDir, path);
@@ -68,9 +77,11 @@ public class Generator extends MLog {
 			MProperties prop = new MProperties(model.getProperties());
 			prop.putAll(struct.getProperties());
 			prop.setString("_name", name);
+			prop.put("_model", model);
 			prop.put("_inst", inst.getDef());
 			prop.put("_def", struct.getDefinition());
 			prop.put("_fields", struct.getFields());
+			prop.put("_struct", struct);
 			prop.put("_object", struct);
 			
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
@@ -86,11 +97,12 @@ public class Generator extends MLog {
 			MProperties prop = new MProperties(model.getProperties());
 			prop.putAll(service.getProperties());
 			prop.setString("_name", name);
+			prop.put("_model", model);
 			prop.put("_inst", inst.getDef());
 			prop.put("_def", service.getDefinition());
 			prop.put("_fields", service.getParameters());
 			prop.put("_result", service.getResult());
-			prop.put("_object", service);
+			prop.put("_service", service);
 
 			String path = StringCompiler.compile(inst.getPath()).execute(prop);
 			File d = new File(targetDir, path);
@@ -101,6 +113,7 @@ public class Generator extends MLog {
 
 	private void generateGlobal(Instruction inst) throws MException {
 		MProperties prop = new MProperties(model.getProperties());
+		prop.put("_model", model);
 		prop.put("_inst", inst.getDef());
 		
 		String path = StringCompiler.compile(inst.getPath()).execute(prop);

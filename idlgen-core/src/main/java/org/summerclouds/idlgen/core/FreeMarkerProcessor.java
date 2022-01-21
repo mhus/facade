@@ -10,6 +10,7 @@ import java.util.Map;
 
 import de.mhus.lib.core.MProperties;
 import de.mhus.lib.core.yaml.YMap;
+import de.mhus.lib.errors.MRuntimeException;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
@@ -40,6 +41,7 @@ public class FreeMarkerProcessor implements Processor {
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new MRuntimeException(e);
 		}
 
 	}

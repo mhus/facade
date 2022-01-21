@@ -98,12 +98,17 @@ public class GeneratorBuilder {
 		
 		// flavor
 		for (Struct struct : gen.getModel().getStructs().values()) {
-			struct.getProperties().put("_name", struct.getName());
 			gen.getFlavor().prepare( struct.getProperties() );
+			for (Field f : struct.getFields())
+				gen.getFlavor().prepare( f.getProperties() );
 		}
 		for (Service service : gen.getModel().getServices().values()) {
-			service.getProperties().put("_name", service.getName());
 			gen.getFlavor().prepare( service.getProperties() );
+			Field res = service.getResult();
+			if (res != null)
+				gen.getFlavor().prepare( res.getProperties() );
+			for (Field p : service.getParameters())
+				gen.getFlavor().prepare( p.getProperties() );
 		}
 		gen.getFlavor().prepare( gen.getModel().getProperties() );
 		

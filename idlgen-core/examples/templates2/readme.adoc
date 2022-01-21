@@ -1,0 +1,11 @@
+Template to show how to generate a generic service interface
+
+Access object direct
+
+----
+
+<#if service.result.isField()
+  >${service.result.fieldDefinition.getDefinition().getObject().java}<#else
+  >${service.result.getStruct().getProperties().package}.${service.result.getStruct().getProperties().className}</#if>
+  
+----
