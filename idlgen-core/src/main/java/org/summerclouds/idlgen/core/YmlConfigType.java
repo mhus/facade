@@ -15,8 +15,8 @@
  */
 package org.summerclouds.idlgen.core;
 
-import de.mhus.lib.core.yaml.MYaml;
-import de.mhus.lib.core.yaml.YMap;
+import org.summerclouds.common.core.yaml.MYaml;
+import org.summerclouds.common.core.yaml.YMap;
 
 public class YmlConfigType implements ConfigType {
 

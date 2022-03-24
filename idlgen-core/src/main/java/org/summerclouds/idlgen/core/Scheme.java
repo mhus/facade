@@ -18,8 +18,8 @@ package org.summerclouds.idlgen.core;
 import java.io.File;
 import java.io.IOException;
 
-import de.mhus.lib.core.util.MUri;
-import de.mhus.lib.errors.NotFoundException;
+import org.summerclouds.common.core.error.NotFoundException;
+import org.summerclouds.common.core.util.MUri;
 
 public interface Scheme {
 

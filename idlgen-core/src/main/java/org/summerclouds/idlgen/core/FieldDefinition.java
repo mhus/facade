@@ -1,6 +1,6 @@
 package org.summerclouds.idlgen.core;
 
-import de.mhus.lib.core.yaml.YMap;
+import org.summerclouds.common.core.yaml.YMap;
 
 public class FieldDefinition {
 

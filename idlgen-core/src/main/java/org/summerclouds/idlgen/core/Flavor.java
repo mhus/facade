@@ -1,6 +1,6 @@
 package org.summerclouds.idlgen.core;
 
-import de.mhus.lib.core.MProperties;
+import org.summerclouds.common.core.node.MProperties;
 
 public interface Flavor {
 

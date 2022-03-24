@@ -2,9 +2,9 @@ package org.summerclouds.idlgen.core;
 
 import java.io.File;
 
-import de.mhus.lib.core.MLog;
-import de.mhus.lib.core.MProperties;
-import de.mhus.lib.core.yaml.YMap;
+import org.summerclouds.common.core.log.MLog;
+import org.summerclouds.common.core.node.MProperties;
+import org.summerclouds.common.core.yaml.YMap;
 
 public class DummyProcessor extends MLog implements Processor {
 

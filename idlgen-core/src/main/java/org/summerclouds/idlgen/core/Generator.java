@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mhus.lib.core.MLog;
-import de.mhus.lib.core.MProperties;
-import de.mhus.lib.core.parser.StringCompiler;
-import de.mhus.lib.errors.MException;
+import org.summerclouds.common.core.error.MException;
+import org.summerclouds.common.core.log.MLog;
+import org.summerclouds.common.core.node.MProperties;
+import org.summerclouds.common.core.parser.StringCompiler;
 
 public class Generator extends MLog {
 

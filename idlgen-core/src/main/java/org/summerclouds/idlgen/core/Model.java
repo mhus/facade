@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import de.mhus.lib.core.MProperties;
+import org.summerclouds.common.core.node.MProperties;
 
 public class Model {
 	

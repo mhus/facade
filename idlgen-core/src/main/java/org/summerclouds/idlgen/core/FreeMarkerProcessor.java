@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import de.mhus.lib.core.MProperties;
-import de.mhus.lib.core.yaml.YMap;
-import de.mhus.lib.errors.MRuntimeException;
+import org.summerclouds.common.core.error.ErrorRuntimeException;
+import org.summerclouds.common.core.node.MProperties;
+import org.summerclouds.common.core.yaml.YMap;
+
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
@@ -41,7 +42,7 @@ public class FreeMarkerProcessor implements Processor {
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MRuntimeException(e);
+			throw new ErrorRuntimeException(e);
 		}
 
 	}

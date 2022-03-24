@@ -17,7 +17,7 @@ package org.summerclouds.idlgen.core;
 
 import java.util.HashMap;
 
-import de.mhus.lib.core.util.MUri;
+import org.summerclouds.common.core.util.MUri;
 
 public class Schemes extends HashMap<String,Scheme> {
 

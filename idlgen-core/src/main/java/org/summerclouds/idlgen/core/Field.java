@@ -1,7 +1,7 @@
 package org.summerclouds.idlgen.core;
 
-import de.mhus.lib.core.MProperties;
-import de.mhus.lib.core.yaml.YMap;
+import org.summerclouds.common.core.node.MProperties;
+import org.summerclouds.common.core.yaml.YMap;
 
 public class Field {
 	public enum SEQUENCE {SINGLE, ARRAY, MAP}

@@ -15,7 +15,7 @@
  */
 package org.summerclouds.idlgen.core;
 
-import de.mhus.lib.core.util.MUri;
+import org.summerclouds.common.core.util.MUri;
 
 public interface DirectLoadScheme extends Scheme {
 

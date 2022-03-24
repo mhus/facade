@@ -17,7 +17,7 @@ package org.summerclouds.idlgen.core;
 
 import java.util.HashMap;
 
-import de.mhus.lib.core.MString;
+import org.summerclouds.common.core.tool.MString;
 
 public class ConfigTypes extends HashMap<String,ConfigType> {
 	

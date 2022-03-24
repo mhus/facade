@@ -3,8 +3,8 @@ package org.summerclouds.idlgen.core;
 import java.io.File;
 import java.io.IOException;
 
-import de.mhus.lib.core.MProperties;
-import de.mhus.lib.core.yaml.YMap;
+import org.summerclouds.common.core.node.MProperties;
+import org.summerclouds.common.core.yaml.YMap;
 
 public interface Processor {
 

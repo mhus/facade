@@ -1,6 +1,7 @@
+
 package org.summerclouds.idlgen.core;
 
-import de.mhus.lib.errors.UsageException;
+import org.summerclouds.common.core.error.UsageException;
 
 public class ProcessorFactory {
 

@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.summerclouds.common.core.error.ErrorException;
+import org.summerclouds.common.core.error.MException;
+import org.summerclouds.common.core.error.NotFoundException;
+import org.summerclouds.common.core.error.TooDeepStructuresException;
+import org.summerclouds.common.core.log.MLog;
+import org.summerclouds.common.core.node.MProperties;
+import org.summerclouds.common.core.tool.MFile;
+import org.summerclouds.common.core.util.MUri;
+import org.summerclouds.common.core.util.Version;
+import org.summerclouds.common.core.yaml.YList;
+import org.summerclouds.common.core.yaml.YMap;
 import org.summerclouds.idlgen.core.Field.SEQUENCE;
-
-import de.mhus.lib.core.MFile;
-import de.mhus.lib.core.MLog;
-import de.mhus.lib.core.MProperties;
-import de.mhus.lib.core.util.MUri;
-import de.mhus.lib.core.util.Version;
-import de.mhus.lib.core.yaml.YList;
-import de.mhus.lib.core.yaml.YMap;
-import de.mhus.lib.errors.MException;
-import de.mhus.lib.errors.NotFoundException;
-import de.mhus.lib.errors.TooDeepStructuresException;
 
 public class ModelBuilder extends MLog {
 
@@ -58,7 +58,7 @@ public class ModelBuilder extends MLog {
                 cf = scheme.load(uri);
                 if (cf != null) content = MFile.readFile(cf);
             } catch (IOException e) {
-                throw new MException(e);
+                throw new ErrorException(e);
             }
             if (cf != null) path = cf.getPath();
         }
@@ -116,7 +116,7 @@ public class ModelBuilder extends MLog {
                 cf = scheme.load(uri);
                 if (cf != null) content = MFile.readFile(cf);
             } catch (IOException e) {
-                throw new MException(e);
+                throw new ErrorException(e);
             }
             if (cf != null) path = cf.getPath();
         }

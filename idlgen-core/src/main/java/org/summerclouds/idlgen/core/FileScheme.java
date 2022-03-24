@@ -18,7 +18,7 @@ package org.summerclouds.idlgen.core;
 import java.io.File;
 import java.io.IOException;
 
-import de.mhus.lib.core.util.MUri;
+import org.summerclouds.common.core.util.MUri;
 
 public class FileScheme implements Scheme {
 

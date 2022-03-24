@@ -2,7 +2,7 @@ package org.summerclouds.idlgen.core;
 
 import java.util.LinkedList;
 
-import de.mhus.lib.core.MLog;
+import org.summerclouds.common.core.log.MLog;
 
 public class MainCli extends MLog implements Cli {
 

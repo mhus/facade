@@ -3,14 +3,13 @@ package org.summerclouds.idlgen.test;
 import java.io.File;
 import java.io.IOException;
 
-import org.summerclouds.idlgen.core.ModelBuilder;
 import org.junit.jupiter.api.Test;
+import org.summerclouds.common.core.error.MException;
+import org.summerclouds.common.junit.TestCase;
 import org.summerclouds.idlgen.core.Generator;
 import org.summerclouds.idlgen.core.GeneratorBuilder;
 import org.summerclouds.idlgen.core.Model;
-
-import de.mhus.lib.errors.MException;
-import de.mhus.lib.tests.TestCase;
+import org.summerclouds.idlgen.core.ModelBuilder;
 
 public class GeneratorTest extends TestCase {
 

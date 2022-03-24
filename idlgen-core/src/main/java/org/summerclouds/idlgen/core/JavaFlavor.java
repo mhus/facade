@@ -3,9 +3,8 @@ package org.summerclouds.idlgen.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.summerclouds.common.core.node.MProperties;
 import org.summerclouds.idlgen.core.Field.SEQUENCE;
-
-import de.mhus.lib.core.MProperties;
 
 public class JavaFlavor implements Flavor {
 
