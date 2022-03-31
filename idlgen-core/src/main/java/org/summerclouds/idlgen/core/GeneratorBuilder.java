@@ -16,6 +16,10 @@ public class GeneratorBuilder {
 
 	private Generator gen;
 
+	public GeneratorBuilder() {
+		gen = new Generator(new Model());
+	}
+	
 	public GeneratorBuilder(Model model) {
 		gen = new Generator(model);
 	}

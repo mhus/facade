@@ -1,0 +1,17 @@
+
+global:
+  name: Example
+  module: aaa
+
+
+generate:
+- template: templates1
+  properties:
+    name: Example
+    module: aaa
+  model: config1/idl.yaml
+  target: target/generate1
+  filter:
+    struct:account:
+    service:account:
+    
