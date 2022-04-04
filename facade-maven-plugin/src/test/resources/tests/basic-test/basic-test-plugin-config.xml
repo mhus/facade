@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
-    Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+    Copyright 2018 Mike Hummel
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-            http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,19 +16,22 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
-    <groupId>org.summerclouds.facade</groupId>
-    <artifactId>summer-facade</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  <parent>
-	  <groupId>org.summerclouds.common</groupId>
-	  <artifactId>common-parent</artifactId>
-	  <version>0.0.1-SNAPSHOT</version>
-  </parent>
-    <modules>
-    	<module>facade-core</module>
-    	<module>facade-maven-plugin</module>
-    </modules>
+	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>facade-maven-plugin-basic-test</artifactId>
+	<url>http://www.mhus.de</url>
+	<groupId>org.summerclouds.facade</groupId>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.summerclouds.facade</groupId>
+				<version>0.0.1-SNAPSHOT</version>
+				<artifactId>facade-maven-plugin</artifactId>
+				<configuration>
+				
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

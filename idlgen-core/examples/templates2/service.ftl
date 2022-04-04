@@ -1,4 +1,4 @@
-<#assign Flavor=statics['org.summerclouds.idlgen.core.JavaFlavor']>
+<#assign Flavor=statics['org.summerclouds.facade.core.JavaFlavor']>
 package ${_model.getProperties().package};
 
 public class ${classModule}Service {
