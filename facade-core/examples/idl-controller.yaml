@@ -10,7 +10,7 @@ generate:
     name: Example
     module: aaa
   model: config1/idl.yaml
-  target: ../target/generate4
+  target: ../target/generated-test-sources4
   filter:
     struct:account:
     service:account:

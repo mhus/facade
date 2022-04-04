@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>facade-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-  <parent>
-    <groupId>org.summerclouds.facade</groupId>
-    <artifactId>summer-facade</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<groupId>org.summerclouds.facade</groupId>
+		<artifactId>summer-facade</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.summerclouds.common</groupId>
@@ -19,12 +19,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-			<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-context</artifactId>
-	        <scope>runtime</scope>
-	    </dependency>
-		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>

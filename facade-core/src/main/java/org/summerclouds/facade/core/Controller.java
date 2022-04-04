@@ -86,7 +86,13 @@ public class Controller extends MLog {
 						.get(templateUri)
 						.load(templateUri) )
 				.build();
-		gen.setTargetDir(new File(source.getSchemes().getParent(), target));
+		
+		File targetDir = null;
+		if (target.startsWith("file:/"))
+			targetDir = new File(target.substring(6));
+		else
+			targetDir = new File(source.getSchemes().getParent(), target);
+		gen.setTargetDir(targetDir);
 		gen.generate();
 		
 	}

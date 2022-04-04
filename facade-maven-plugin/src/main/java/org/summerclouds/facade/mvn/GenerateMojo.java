@@ -39,7 +39,7 @@ public class GenerateMojo extends AbstractMojo {
 	@Parameter(required = false)
 	protected File idl;
 
-	@Parameter(defaultValue = "${project.build.directory}/generated-sources/facade")
+	@Parameter(defaultValue = "${project.build.directory}/target/generated-sources")
 	protected File target;
 	
 	@Parameter
@@ -61,8 +61,11 @@ public class GenerateMojo extends AbstractMojo {
 		if (controller != null) {
 			try {
 				List<Controller> controllers = new ControllerBuilder().load(controller).build();
-				for (Controller controller : controllers)
+				for (Controller controller : controllers) {
+					if (target != null && !target.getName().equals("default"))
+						controller.setTarget("file:/" + target.getAbsolutePath());
 					controller.doExecute();
+				}
 			} catch (Throwable t) {
 				throw new MojoExecutionException("can't execute controller: " + controller, t);
 			}
