@@ -3,6 +3,7 @@ package org.summerclouds.facade.mvn;
 import java.io.File;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.junit.jupiter.api.Test;
 import org.summerclouds.common.junit.TestUtil;
 
 public class FacadePluginTest extends AbstractMojoTestCase {
@@ -13,6 +14,7 @@ public class FacadePluginTest extends AbstractMojoTestCase {
         super.setUp();
     }
 	
+//	@Test
 	public void testMojoGoal() throws Exception
     {
         File testPom = new File( getBasedir(),

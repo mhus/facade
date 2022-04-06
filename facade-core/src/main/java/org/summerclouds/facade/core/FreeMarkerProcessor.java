@@ -62,7 +62,7 @@ public class FreeMarkerProcessor implements Processor {
 		Map<String, Object> sharedVariables = new HashMap<>();
 		sharedVariables.put("statics", statics);
 		try {
-			cfg.setSharedVaribles(sharedVariables);
+			cfg.setSharedVariables(sharedVariables);
 		} catch (TemplateModelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

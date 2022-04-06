@@ -24,8 +24,7 @@ import org.summerclouds.facade.core.Source;
 	defaultPhase = LifecyclePhase.GENERATE_SOURCES,
 	requiresDependencyResolution = ResolutionScope.COMPILE,
 	requiresProject = true, 
-	threadSafe = true,
-	inheritByDefault = false
+	threadSafe = true
 )
 
 public class GenerateMojo extends AbstractMojo {
